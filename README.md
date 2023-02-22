@@ -8,8 +8,8 @@ This plugin exposes API that mocks default Java structures hiding underneath rem
 ## Add to plugin
 
 
-## Is it "thread-safe"?
-****
+Is it "thread-safe"?
+---
 Depends on what do you mean by "thread-safe". Usually this depends on underlying driver/storage.
 
 People tend to call "thread-safe" a few rather different things like safety, concurrency and persistence. so here is a little FAQ for Redis to figure out your answer.
