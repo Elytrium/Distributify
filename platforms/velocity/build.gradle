@@ -1,0 +1,35 @@
+plugins {
+    id("java")
+    id("com.github.johnrengelman.shadow").version("7.1.2")
+}
+
+repositories {
+    maven {
+        setName("elytrium-repo")
+        setUrl("https://maven.elytrium.net/repo/")
+    }
+    maven {
+        setName("papermc-repo")
+        setUrl("https://papermc.io/repo/repository/maven-public/")
+    }
+}
+
+dependencies {
+    compileOnly("com.velocitypowered:velocity-api:$velocityVersion")
+    annotationProcessor("com.velocitypowered:velocity-api:$velocityVersion")
+
+    implementation(project(":api"))
+}
+
+sourceSets.main.getJava().srcDir(
+        getTasks().register("generateTemplates", Copy) {
+            task -> {
+                String version = getVersion().contains("-") ? "${getVersion()} (git-${getCurrentShortRevision()})" : getVersion()
+                task.getInputs().properties("version": version)
+                task.from(file("src/main/templates")).into(getLayout().getBuildDirectory().dir("generated/sources/templates"))
+                task.expand("version": version)
+            }
+        }.map {
+            it.getOutputs()
+        }
+)

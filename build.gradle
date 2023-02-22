@@ -1,0 +1,84 @@
+//file:noinspection GroovyAssignabilityCheck
+
+plugins {
+    id("java")
+    id("checkstyle")
+    id("com.github.spotbugs").version("5.0.6").apply(false)
+    id("org.cadixdev.licenser").version("0.6.1").apply(false)
+
+}
+
+
+
+allprojects {
+    //apply(plugin: "java")
+    apply(plugin: "checkstyle")
+    apply(plugin: "com.github.spotbugs")
+    apply(plugin: "org.cadixdev.licenser")
+
+    setGroup("ru.meproject.distributify")
+    setVersion("0.0.1")
+
+    compileJava {
+        getOptions().setEncoding("UTF-8")
+    }
+
+    java {
+        setSourceCompatibility(JavaVersion.VERSION_11)
+        setTargetCompatibility(JavaVersion.VERSION_11)
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    /*dependencies {
+        assemble.dependsOn(shadowJar)
+    }
+
+    shadowJar {
+        archiveClassifier.set("")
+    }*/
+
+    license {
+        setHeader(file("${this.getRootDir()}/HEADER.txt"))
+    }
+
+    checkstyle {
+        setToolVersion("10.1")
+        setConfigFile(file("${this.getRootDir()}/config/checkstyle/checkstyle.xml"))
+        setConfigProperties("configDirectory": "${this.getRootDir()}/config/checkstyle")
+
+        // The build should immediately fail if we have errors.
+        setMaxErrors(0)
+        setMaxWarnings(0)
+    }
+
+    spotbugsMain {
+        setExcludeFilter(file("${this.getRootDir()}/config/spotbugs/suppressions.xml"))
+
+        reports {
+            html {
+                getRequired().set(true)
+                getOutputLocation().set(file("${this.getBuildDir()}/reports/spotbugs/main/spotbugs.html"))
+                setStylesheet("fancy-hist.xsl")
+            }
+        }
+    }
+}
+
+
+String getCurrentShortRevision() {
+    OutputStream outputStream = new ByteArrayOutputStream()
+    exec {
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            commandLine("cmd", "/c", "git rev-parse --short HEAD")
+        } else {
+            commandLine("bash", "-c", "git rev-parse --short HEAD")
+        }
+
+        setStandardOutput(outputStream)
+    }
+
+    return outputStream.toString().trim()
+}
