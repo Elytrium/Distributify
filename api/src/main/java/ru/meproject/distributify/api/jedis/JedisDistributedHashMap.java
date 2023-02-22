@@ -1,6 +1,7 @@
 package ru.meproject.distributify.api.jedis;
 
 import ru.meproject.distributify.api.DistributedHashMap;
+import ru.meproject.distributify.api.DistributifyDriverConfig;
 import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
 import redis.clients.jedis.JedisPool;
@@ -9,14 +10,14 @@ import java.util.function.Consumer;
 
 public class JedisDistributedHashMap<V> implements DistributedHashMap<V> {
     private final JedisPool jedisPool;
-    private final String keyPattern;
+    private final JedisDriverConfig config;
     private final Serializer<V> serializer;
     private final Deserializer<V> deserializer;
     private final Consumer<Exception> exceptionHandler;
 
-    public JedisDistributedHashMap(JedisPool jedisPool, String redisHashMapPattern, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler) {
+    public JedisDistributedHashMap(JedisPool jedisPool, DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler) {
         this.jedisPool = jedisPool;
-        this.keyPattern = redisHashMapPattern;
+        this.config = (JedisDriverConfig) config;
         this.serializer = serializer;
         this.deserializer = deserializer;
         this.exceptionHandler = exceptionHandler;
@@ -95,6 +96,6 @@ public class JedisDistributedHashMap<V> implements DistributedHashMap<V> {
     }
 
     private String getRedisKey(String key) {
-        return String.format(keyPattern, key);
+        return config.keyPattern() + ":" + key;
     }
 }

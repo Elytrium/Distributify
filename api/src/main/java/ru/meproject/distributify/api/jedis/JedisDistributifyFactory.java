@@ -2,6 +2,7 @@ package ru.meproject.distributify.api.jedis;
 
 import ru.meproject.distributify.api.DistributedHashMap;
 import ru.meproject.distributify.api.DistributedLongCounter;
+import ru.meproject.distributify.api.DistributifyDriverConfig;
 import ru.meproject.distributify.api.DistributifyFactory;
 import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
@@ -19,13 +20,13 @@ public class JedisDistributifyFactory implements DistributifyFactory {
     }
 
     @Override
-    public <V> DistributedHashMap<V> hashMap(String redisHashMapPattern, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler) {
-        return new JedisDistributedHashMap<>(jedisPool, redisHashMapPattern, serializer, deserializer, exceptionHandler);
+    public <V> DistributedHashMap<V> hashMap(DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler) {
+        return new JedisDistributedHashMap<>(jedisPool, config, serializer, deserializer, exceptionHandler);
     }
 
     @Override
-    public DistributedLongCounter longCounter(String redisLongAddrPattern) {
-        return new JedisDistributedLongCounter(jedisPool, redisLongAddrPattern);
+    public DistributedLongCounter longCounter(DistributifyDriverConfig config) {
+        return new JedisDistributedLongCounter(jedisPool, config);
     }
 
 }

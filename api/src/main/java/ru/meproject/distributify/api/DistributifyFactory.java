@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  */
 public interface DistributifyFactory {
 
-    <V> DistributedHashMap<V> hashMap(String redisHashMapPattern, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler);
+    <V> DistributedHashMap<V> hashMap(DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler);
 
-    DistributedLongCounter longCounter(String redisLongAddrPattern);
+    DistributedLongCounter longCounter(DistributifyDriverConfig config);
 }
