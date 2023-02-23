@@ -12,5 +12,7 @@ public interface DistributifyFactory {
 
     <V> DistributedHashMap<V> hashMap(DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler);
 
+    <V> DistributedSafeHashMap<V> safeHashMap(DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler);
+
     DistributedLongCounter longCounter(DistributifyDriverConfig config);
 }

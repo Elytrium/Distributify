@@ -65,7 +65,7 @@ Current Status
 ---
 **API**
 - [x] HashMap
-- [ ] SafeHashMap?
+- [x] SafeHashMap
 - [x] Counter
 - [ ] Message broking
 - [ ] ... more ..?
