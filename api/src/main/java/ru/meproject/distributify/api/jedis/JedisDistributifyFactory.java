@@ -1,5 +1,6 @@
 package ru.meproject.distributify.api.jedis;
 
+import redis.clients.jedis.JedisPoolConfig;
 import ru.meproject.distributify.api.*;
 import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
@@ -11,9 +12,11 @@ public class JedisDistributifyFactory implements DistributifyFactory {
 
     private final JedisPool jedisPool;
 
-    public JedisDistributifyFactory() {
-        // TODO: config values
-        jedisPool = new JedisPool("localhost", 6379);
+    public JedisDistributifyFactory(String hostname, int port, int timeout, String password, int maxTotal, int maxIdle) {
+        var jedisConfig = new JedisPoolConfig();
+        jedisConfig.setMaxTotal(maxTotal);
+        jedisConfig.setMaxIdle(maxIdle);
+        jedisPool = new JedisPool(jedisConfig, hostname, port, timeout, password);
     }
 
     @Override

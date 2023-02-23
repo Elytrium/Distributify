@@ -16,9 +16,10 @@ import java.nio.file.Path;
         name = "Distributify",
         version = BuildConstants.DISTRIBUTIFY_VERSION,
         description = "API for mocking Java structures with underlying storages",
-        url = "",
+        url = "https://elytrium.net/",
         authors = {
-                "",
+                "Elytrium (https://elytrium.net/)",
+                "realkarmakun"
         }
 )
 public class Distributify {
@@ -33,6 +34,6 @@ public class Distributify {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        // TODO: what to do anyway? load libraries through classpath perhaps?
+        logger.info("Distributify enabled");
     }
 }

@@ -20,7 +20,6 @@ import ru.meproject.distributify.api.DistributifyDriverConfig;
 public class JedisDriverConfig implements DistributifyDriverConfig {
     private String keyPattern = null;
     private long expireSeconds = 0L;
-    private boolean separateJedisPool = false;
 
     public JedisDriverConfig() {}
 
@@ -39,21 +38,6 @@ public class JedisDriverConfig implements DistributifyDriverConfig {
 
     public JedisDriverConfig expireSeconds(long expireSeconds) {
         this.expireSeconds = expireSeconds;
-        return this;
-    }
-
-    public boolean separateJedisPool() {
-        return separateJedisPool;
-    }
-
-    /**
-     * Should probably avoid using this to make sure there is single JedisPool instance for all structures;
-     * @param shouldSeparate
-     * @return
-     */
-    @Deprecated
-    public JedisDriverConfig separateJedisPool(boolean shouldSeparate) {
-        this.separateJedisPool = shouldSeparate;
         return this;
     }
 }

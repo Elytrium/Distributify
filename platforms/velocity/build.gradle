@@ -21,6 +21,22 @@ dependencies {
     implementation(project(":api"))
 }
 
+shadowJar {
+    getArchiveClassifier().set("")
+    setArchiveFileName("distributify-${version}.${extension}")
+
+    exclude("META-INF/versions/**")
+    //exclude("net/kyori/**")
+
+
+    relocate("redis.client", "ru.meproject.distributify.driver")
+    /*relocate("net.elytrium.fastprepare", "net.elytrium.limboapi.thirdparty.fastprepare")
+    relocate("net.elytrium.commons.velocity", "net.elytrium.limboapi.thirdparty.commons.velocity")
+    relocate("net.elytrium.commons.kyori", "net.elytrium.limboapi.thirdparty.commons.kyori")
+    relocate("net.elytrium.commons.config", "net.elytrium.limboapi.thirdparty.commons.config")*/
+
+}
+
 sourceSets.main.getJava().srcDir(
         getTasks().register("generateTemplates", Copy) {
             task -> {
@@ -33,3 +49,6 @@ sourceSets.main.getJava().srcDir(
             it.getOutputs()
         }
 )
+
+
+assemble.dependsOn(shadowJar)
