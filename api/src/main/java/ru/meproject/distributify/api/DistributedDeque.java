@@ -1,5 +1,9 @@
 package ru.meproject.distributify.api;
 
+/**
+ * Non-blocking API for Deque (two-way queue)
+ * @param <E> - value to put in storage
+ */
 public interface DistributedDeque<E> {
 
     boolean add(E element);

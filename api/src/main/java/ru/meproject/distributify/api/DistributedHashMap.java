@@ -1,8 +1,9 @@
 package ru.meproject.distributify.api;
 
 /**
- * Structures implementing this interface act as DistributedHashMap.
- * Persistence is not guaranteed by LimboSync nor underlying storage.
+ * Not blocking API for HashMap.
+ * Key values are hardcoded as Strings
+ * @param <V> - value to put in storage
  */
 public interface DistributedHashMap<V> {
 
