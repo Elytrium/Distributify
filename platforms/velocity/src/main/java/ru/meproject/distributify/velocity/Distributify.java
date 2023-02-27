@@ -19,7 +19,7 @@ import java.nio.file.Path;
         url = "https://elytrium.net/",
         authors = {
                 "Elytrium (https://elytrium.net/)",
-                "realkarmakun"
+                "realkarmakun (MeProject)"
         }
 )
 public class Distributify {

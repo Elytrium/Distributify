@@ -14,6 +14,4 @@ public interface DistributedHashMap<V> {
     boolean remove(String key);
 
     boolean containsKey(String key);
-
-    void putExpiring(String key, V value, long seconds);
 }

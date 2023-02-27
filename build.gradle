@@ -8,8 +8,6 @@ plugins {
 
 }
 
-
-
 allprojects {
     //apply(plugin: "java")
     apply(plugin: "checkstyle")
@@ -66,7 +64,6 @@ allprojects {
         }
     }
 }
-
 
 String getCurrentShortRevision() {
     OutputStream outputStream = new ByteArrayOutputStream()

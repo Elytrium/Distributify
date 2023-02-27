@@ -1,10 +1,10 @@
 package ru.meproject.distributify.api.jedis;
 
+import redis.clients.jedis.JedisPool;
 import ru.meproject.distributify.api.DistributedHashMap;
 import ru.meproject.distributify.api.DistributifyDriverConfig;
 import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
-import redis.clients.jedis.JedisPool;
 
 import java.util.function.Consumer;
 
@@ -33,6 +33,12 @@ public class JedisDistributedHashMap<V> implements DistributedHashMap<V> {
     public void put(String key, V value) {
         try (var jedis = jedisPool.getResource()) {
             final var serializedValue =  serializer.serialize(value);
+            if (config.expireSeconds() != 0L) {
+                var pipeline = jedis.pipelined();
+                pipeline.hset(getRedisKey(key), key, serializedValue);
+                pipeline.expire(getRedisKey(key), config.expireSeconds());
+                return;
+            }
             jedis.hset(getRedisKey(key), key, serializedValue);
         } catch (Exception e) {
             exceptionHandler.accept(e);
@@ -79,19 +85,6 @@ public class JedisDistributedHashMap<V> implements DistributedHashMap<V> {
     public boolean containsKey(String key) {
         try (var jedis = jedisPool.getResource()) {
             return jedis.hexists(getRedisKey(key), key);
-        }
-    }
-
-    @Override
-    public void putExpiring(String key, V value, long seconds) {
-        try (var jedis = jedisPool.getResource()) {
-            var pipeline = jedis.pipelined();
-            final var serializedValue =  serializer.serialize(value);
-            pipeline.hset(getRedisKey(key), key, serializedValue);
-            pipeline.expire(getRedisKey(key), seconds);
-            pipeline.sync();
-        } catch (Exception e) {
-            exceptionHandler.accept(e);
         }
     }
 
