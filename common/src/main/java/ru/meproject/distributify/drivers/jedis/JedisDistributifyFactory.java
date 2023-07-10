@@ -2,9 +2,13 @@ package ru.meproject.distributify.drivers.jedis;
 
 import redis.clients.jedis.JedisPoolConfig;
 import ru.meproject.distributify.api.*;
+import ru.meproject.distributify.api.platform.PlatformType;
 import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
 import redis.clients.jedis.JedisPool;
+import ru.meproject.distributify.api.structures.DistributedHashMap;
+import ru.meproject.distributify.api.structures.DistributedLongCounter;
+import ru.meproject.distributify.api.structures.DistributedSafeHashMap;
 
 import java.util.function.Consumer;
 
@@ -20,18 +24,28 @@ public class JedisDistributifyFactory implements DistributifyFactory {
     }
 
     @Override
-    public <V> DistributedHashMap<V> hashMap(DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler) {
-        return new JedisDistributedHashMap<>(jedisPool, config, serializer, deserializer, exceptionHandler);
+    public PlatformType platform() {
+        return null;
     }
 
     @Override
-    public <V> DistributedSafeHashMap<V> safeHashMap(DistributifyDriverConfig config, Serializer<V> serializer, Deserializer<V> deserializer, Consumer<Exception> exceptionHandler) {
+    public String instanceName() {
+        return null;
+    }
+
+    @Override
+    public DistributedHashMap hashMap(DistributifyDriverConfig config, Serializer serializer, Deserializer deserializer, Consumer exceptionHandler) {
+        return null;
+    }
+
+    @Override
+    public DistributedSafeHashMap safeHashMap(DistributifyDriverConfig config, Serializer serializer, Deserializer deserializer, Consumer exceptionHandler) {
         return new JedisDistributedSafeHashMap<>(jedisPool, config, serializer, deserializer, exceptionHandler);
     }
 
     @Override
     public DistributedLongCounter longCounter(DistributifyDriverConfig config) {
-        return new JedisDistributedLongCounter(jedisPool, config);
+        return null;
     }
 
 }

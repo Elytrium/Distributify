@@ -5,7 +5,6 @@ plugins {
 
 dependencies {
     // Not yet uses classpath loading
-    implementation("redis.clients:jedis:$jedisVersion")
 }
 
 task javadocJar(type: Jar) {

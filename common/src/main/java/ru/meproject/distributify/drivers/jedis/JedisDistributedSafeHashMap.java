@@ -1,7 +1,7 @@
 package ru.meproject.distributify.drivers.jedis;
 
 import redis.clients.jedis.JedisPool;
-import ru.meproject.distributify.api.DistributedSafeHashMap;
+import ru.meproject.distributify.api.structures.DistributedSafeHashMap;
 import ru.meproject.distributify.api.DistributifyDriverConfig;
 import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
