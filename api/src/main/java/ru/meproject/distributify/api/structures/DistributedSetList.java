@@ -2,6 +2,8 @@ package ru.meproject.distributify.api.structures;
 
 import java.util.Set;
 
+// distributify:<plugin-id>:<structure-name>:<partent-id>:<unique-id>
+
 /**
  * DistributedSetList is for creating union of sets that can perform operations on it.
  * Each instance keeps track of data points in its own set. The union of said sets is set of all data points in a system.
