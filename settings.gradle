@@ -4,4 +4,5 @@ include 'platforms:velocity'
 findProject(':platforms:velocity')?.name = 'velocity'
 include 'platforms:paper'
 findProject(':platforms:paper')?.name = 'paper'
+include 'common'
 

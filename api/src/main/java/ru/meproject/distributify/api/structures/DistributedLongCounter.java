@@ -1,4 +1,4 @@
-package ru.meproject.distributify.api;
+package ru.meproject.distributify.api.structures;
 
 /**
  * Blocking API for Counter

@@ -1,7 +1,7 @@
-package ru.meproject.distributify.api;
+package ru.meproject.distributify.api.structures;
 
 /**
- * Blocking implementation of {@link ru.meproject.distributify.api.DistributedHashMap}.
+ * Blocking implementation of {@link DistributedHashMap}.
  * Key values are hardcoded as Strings.
  * @param <V> - value to put in storage
  */

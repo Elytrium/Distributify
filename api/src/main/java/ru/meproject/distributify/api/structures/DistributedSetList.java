@@ -1,9 +1,9 @@
-package ru.meproject.distributify.api;
+package ru.meproject.distributify.api.structures;
 
 import java.util.Set;
 
 /**
- * SnapshotSetUnion is for creating union of sets that can perform operations on it.
+ * DistributedSetList is for creating union of sets that can perform operations on it.
  * Each instance keeps track of data points in its own set. The union of said sets is set of all data points in a system.
  * The lowest data point in this structure must be a set. Meaning we operate with subsets only.
  * Also meaning we don't support adding and discarding players one by one.
@@ -14,7 +14,7 @@ import java.util.Set;
  * Examples:
  * Cases like whole system player list.
  */
-public interface SnapshotSetUnion<E> {
+public interface DistributedSetList<E> {
 
     /**
      * Send snapshot of a subset to database

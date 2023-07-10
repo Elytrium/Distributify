@@ -1,4 +1,4 @@
-package ru.meproject.distributify.api;
+package ru.meproject.distributify.api.structures;
 
 /**
  * Non-blocking API for Deque (two-way queue)

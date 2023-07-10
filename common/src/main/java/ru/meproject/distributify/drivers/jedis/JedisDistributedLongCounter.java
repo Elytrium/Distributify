@@ -1,4 +1,4 @@
-package ru.meproject.distributify.api.jedis;
+package ru.meproject.distributify.drivers.jedis;
 
 import ru.meproject.distributify.api.DistributedLongCounter;
 import redis.clients.jedis.JedisPool;
