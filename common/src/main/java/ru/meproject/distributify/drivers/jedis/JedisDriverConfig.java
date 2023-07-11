@@ -18,7 +18,7 @@ import ru.meproject.distributify.api.DistributifyDriverConfig;
  * To enable expiry, set value to seconds that value need to be present in storage
  */
 public class JedisDriverConfig implements DistributifyDriverConfig {
-    private String keyPattern = null;
+    private String keyPattern = "distributify:plugin";
     private long expireSeconds = 0L;
 
     public JedisDriverConfig() {}
