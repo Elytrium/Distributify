@@ -22,14 +22,14 @@ public interface DistributedSetList<E> {
      * Send snapshot of a subset to database
      * @param set - set of values to be sent
      */
-    void snapshotSubSet(Set<E> set);
+    void snapshotSubSet(String parentKey, Set<E> set);
 
     /**
      * Get latest subset from database
      * @return
      */
-    Set<E> getSubSet();
+    Set<E> getSubSet(String parentKey, String key);
 
-    Set<E> getUnionSet();
+    Set<E> getUnionSet(String parentKey);
 
 }

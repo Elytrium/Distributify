@@ -1,4 +1,4 @@
-rootProject.name = 'distributify'
+rootProject.name = 'Distributify'
 include 'api'
 include 'platforms:velocity'
 findProject(':platforms:velocity')?.name = 'velocity'
