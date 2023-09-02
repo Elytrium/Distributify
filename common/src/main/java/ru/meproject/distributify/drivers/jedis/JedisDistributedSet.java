@@ -6,7 +6,9 @@ import ru.meproject.distributify.api.serialization.Deserializer;
 import ru.meproject.distributify.api.serialization.Serializer;
 import ru.meproject.distributify.api.structures.DistributedSetList;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 // distributify:<plugin-id>:<structure-name>:<partent-id>:<unique-id>
@@ -33,34 +35,62 @@ public class JedisDistributedSet<V> implements DistributedSetList<V> {
         this.structureId = structureId;
     }
     @Override
-    public void snapshotSubSet(String key, Set<V> set) {
+    public void snapshotSubSet(String parentKey, Set<V> set) {
         try (var jedis = jedisPool.getResource()) {
+            var transaction = jedis.multi();
+            var serializedSetKey = getRedisKey(parentKey) + UUID.randomUUID();
             for (V value: set) {
-                var serializedValue = serializer.serialize(value);
-                if (config.expireSeconds() != 0L) {
-                    var pipeline = jedis.pipelined();
-                    pipeline.sadd(getRedisKey(key), key, serializedValue);
-                    pipeline.expire(getRedisKey(key), config.expireSeconds());
-                    return;
-                }
-                jedis.sadd(getRedisKey(key), key, serializedValue);
+                transaction.sadd(serializedSetKey, serializer.serialize(value));
             }
+            transaction.sadd(getRedisKey(parentKey), serializedSetKey);
         } catch (Exception e) {
             exceptionHandler.accept(e);
         }
     }
 
     @Override
-    public Set<V> getSubSet() {
-        return null;
+    public Set<V> getSubSet(String parentKey, String key) {
+        try (var jedis = jedisPool.getResource()) {
+            var transaction = jedis.multi();
+            var unserializedSet = transaction.smembers(getRedisKey(parentKey) + ":" + key).get();
+            var serializedSet = new HashSet<V>();
+
+            for (String item: unserializedSet) {
+                serializedSet.add(deserializer.deserialize(item));
+            }
+
+            return serializedSet;
+        } catch (Exception e) {
+            exceptionHandler.accept(e);
+            return null;
+        }
     }
 
     @Override
-    public Set<V> getUnionSet() {
-        return null;
+    public Set<V> getUnionSet(String parentKey) {
+        try (var jedis = jedisPool.getResource()) {
+            var transaction = jedis.multi();
+            var setWithKeys = transaction.smembers(getRedisKey(parentKey)).get();
+            var resultUnserializedSet = new HashSet<String>();
+
+            for (String key: setWithKeys) {
+                resultUnserializedSet.addAll(transaction.smembers(getRedisKey(parentKey) + ":" + key).get());
+            }
+
+            var serializedSet = new HashSet<V>();
+
+            for (String item: resultUnserializedSet) {
+                serializedSet.add(deserializer.deserialize(item));
+            }
+
+            return serializedSet;
+        } catch (Exception e) {
+            exceptionHandler.accept(e);
+            return null;
+        }
     }
 
     private String getRedisKey(String key) {
-        return config.keyPattern() + ":set:" + key;
+        return config.keyPattern() + ":"+structureId+":" + key;
     }
 }
